@@ -10,7 +10,7 @@ function App() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:3010/products");
+        const res = await fetch("https://product-search-backend.vercel.app/products");
         const jsonData = await res.json();
         setData(jsonData.products);
       } catch (error) {
@@ -23,14 +23,14 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(data); // Move the console.log statement here
-  }, [data]); // Add data as a dependency
+    console.log(data); 
+  }, [data]); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3010/products?query=${search}`);
+      const res = await fetch(`https://product-search-backend.vercel.app/products?query=${search}`);
       const jsonData = await res.json();
       setData(jsonData.products);
     } catch (error) {
@@ -58,26 +58,29 @@ function App() {
       ) : error ? (
         <p>Error: {error.message}</p>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <React.Fragment key={`pro_${index}`}>
-                {item.variants.edges.map((variant, ind) => (
-                  <tr key={ind}>
-                    <td>{variant.node.displayName}</td>
-                    <td>{variant.node.price}</td>
-                  </tr>
-                ))}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
+       <>{
+        data.length>0 &&  <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item, index) => (
+            <React.Fragment key={`pro_${index}`}>
+              {item.variants.edges.map((variant, ind) => (
+                <tr key={ind}>
+                  <td>{variant.node.displayName}</td>
+                  <td>{variant.node.price}</td>
+                </tr>
+              ))}
+            </React.Fragment>
+          ))}
+        </tbody>
+      </table>
+       }
+       </>
       )}
     </div>
   );
