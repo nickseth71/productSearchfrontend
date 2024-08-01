@@ -54,7 +54,7 @@ function App() {
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search"
         />
-        <button className="border border-black px-4 py2 " type="submit">Search</button>
+        <button className="border border-black px-4 py2 pl-2 " type="submit">Search</button>
       </form>
 </div>
 
@@ -64,7 +64,9 @@ function App() {
         <p>Error: {error.message}</p>
       ) : (
        <>{
-        data.length>0 && <table className="table-auto w-full border-collapse">
+        data.length>0 && <div className="text-center">
+          <h2 className="text-xl font-bold my-5">Product Title : {data[0].title} </h2>
+          <table className="table-auto w-full border-collapse">
         <thead>
           <tr>
             <th className="px-4 py-2 border-b-2 border-gray-200">Title</th>
@@ -77,7 +79,7 @@ function App() {
               {item.variants.edges.map((variant, ind) => (
                 <tr key={ind} className="hover:bg-gray-100">
                   {console.log(moneyFormat)}
-                  <td className="px-4 py-2 border-b border-gray-200">{variant.node.displayName}</td>
+                  <td className="px-4 py-2 border-b border-gray-200">{variant.node.title}</td>
                   <td className="px-4 py-2 border-b border-gray-200">{moneyFormat.replace('{{amount}}',variant.node.price)}</td>
                 </tr>
               ))}
@@ -85,6 +87,7 @@ function App() {
           ))}
         </tbody>
       </table>
+        </div>
       
        }
        </>
