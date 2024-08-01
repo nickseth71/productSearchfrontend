@@ -5,6 +5,7 @@ function App() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [shop,setShop] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +34,7 @@ function App() {
       const res = await fetch(`https://product-search-backend.vercel.app/products?query=${search}`);
       const jsonData = await res.json();
       setData(jsonData.products);
+      setShop(jsonData.shop)
     } catch (error) {
       setError(error);
     } finally {
@@ -42,16 +44,19 @@ function App() {
 
   return (
     <div>
-      <h1>Products</h1>
-      <form onSubmit={handleSubmit}>
+<div>
+<h1 className="text-3xl font-bold m-10">Products</h1>
+      <form onSubmit={handleSubmit} className="ml-10 mt-10">
         <input
+        className="p-1 border "
           type="search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search"
         />
-        <button type="submit">Search</button>
+        <button className="border border-black px-4 py2 " type="submit">Search</button>
       </form>
+</div>
 
       {loading ? (
         <p>Loading...</p>
@@ -59,26 +64,28 @@ function App() {
         <p>Error: {error.message}</p>
       ) : (
        <>{
-        data.length>0 &&  <table>
+        data.length>0 && <table className="table-auto w-full border-collapse">
         <thead>
           <tr>
-            <th>Title</th>
-            <th>Price</th>
+            <th className="px-4 py-2 border-b-2 border-gray-200">Title</th>
+            <th className="px-4 py-2 border-b-2 border-gray-200">Price</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item, index) => (
             <React.Fragment key={`pro_${index}`}>
               {item.variants.edges.map((variant, ind) => (
-                <tr key={ind}>
-                  <td>{variant.node.displayName}</td>
-                  <td>{variant.node.price}</td>
+                <tr key={ind} className="hover:bg-gray-100">
+                  {console.log(shop)}
+                  <td className="px-4 py-2 border-b border-gray-200">{variant.node.displayName}</td>
+                  <td className="px-4 py-2 border-b border-gray-200">{variant.node.price}</td>
                 </tr>
               ))}
             </React.Fragment>
           ))}
         </tbody>
       </table>
+      
        }
        </>
       )}
