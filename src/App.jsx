@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
 
 function App() {
-  // State variables
-  const [data, setData] = useState([]); // Holds the fetched products data
-  const [search, setSearch] = useState(""); // Holds the search query
+  // variables
+  const [data, setData] = useState([]); // fetched products data
+  const [search, setSearch] = useState(""); //search query
   const [loading, setLoading] = useState(false); // Indicates if the data is being loaded
-  const [error, setError] = useState(null); // Holds any error that occurs during data fetching
-  const [moneyFormat, setMoneyFormat] = useState(null); // Holds the currency format for displaying prices
+  const [error, setError] = useState(null); //check for erros
+  const [moneyFormat, setMoneyFormat] = useState(null); //currency format
 
-  // Fetch initial data on component mount
+  // Fetch initial data
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true); // Set loading to true while fetching data
       try {
         const res = await fetch("https://product-search-backend.vercel.app/products"); // Fetch data from the API
-        const jsonData = await res.json(); // Parse the JSON response
+        const jsonData = await res.json(); // JSON response
         setData(jsonData.products); // Set the fetched data to the state
       } catch (error) {
-        setError(error); // Set any error that occurs
+        setError(error); 
       } finally {
-        setLoading(false); // Set loading to false once data is fetched
+        setLoading(false); 
       }
     };
     fetchData(); // Call the function to fetch data
@@ -27,19 +27,19 @@ function App() {
 
 
 
-  // Handle form submission to search for products
+  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault(); 
     setLoading(true); // Set loading to true while fetching data
     try {
       const res = await fetch(`https://product-search-backend.vercel.app/products?query=${search}`); // Fetch data based on the search query
-      const jsonData = await res.json(); // Parse the JSON response
+      const jsonData = await res.json(); // JSON response
       setData(jsonData.products); // Set the fetched data to the state
       setMoneyFormat(jsonData.shop.currencyFormats.moneyFormat); // Set the money format for displaying prices
     } catch (error) {
-      setError(error); // Set any error that occurs
+      setError(error); 
     } finally {
-      setLoading(false); // Set loading to false once data is fetched
+      setLoading(false); 
     }
   };
 
