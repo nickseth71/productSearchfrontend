@@ -5,7 +5,7 @@ function App() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [shop,setShop] = useState(null);
+  const [moneyFormat,setMoneyFormat] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +34,7 @@ function App() {
       const res = await fetch(`https://product-search-backend.vercel.app/products?query=${search}`);
       const jsonData = await res.json();
       setData(jsonData.products);
-      setShop(jsonData.shop)
+      setMoneyFormat(jsonData.shop.currencyFormats.moneyFormat)
     } catch (error) {
       setError(error);
     } finally {
@@ -76,9 +76,9 @@ function App() {
             <React.Fragment key={`pro_${index}`}>
               {item.variants.edges.map((variant, ind) => (
                 <tr key={ind} className="hover:bg-gray-100">
-                  {console.log(shop)}
+                  {console.log(moneyFormat)}
                   <td className="px-4 py-2 border-b border-gray-200">{variant.node.displayName}</td>
-                  <td className="px-4 py-2 border-b border-gray-200">{variant.node.price}</td>
+                  <td className="px-4 py-2 border-b border-gray-200">{moneyFormat.replace('{{amount}}',variant.node.price)}</td>
                 </tr>
               ))}
             </React.Fragment>
